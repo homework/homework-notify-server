@@ -28,6 +28,7 @@ public class GrowlNotify implements Notify{
 
             GrowlNotificationPacket growlNotificationPacket = new GrowlNotificationPacket("Homework", "networkevent", "Router Notification", message, 1, false);//create a notification
             packetPayload = growlNotificationPacket.payload();//create notification data to send
+	    String notificationId = "";
             if(sendPacket(packetPayload, inetAddr)){ //send notification.
 	    	HWDBResponse.respond(notificationId, true, "Growl notification sent");
 	    } else {

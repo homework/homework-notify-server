@@ -96,6 +96,7 @@ public class Main implements Runnable{
     }
 
     public boolean sendNotification(String notification, String userDetails, String eventName) {
+	boolean result = false;
         try {
             notification = getFullClassName(notification);
             ClassLoader loader = Main.class.getClassLoader();
@@ -103,48 +104,20 @@ public class Main implements Runnable{
             Notify notify;
             c = loader.loadClass(notification);
             notify = (Notify) c.newInstance();
-            return notify.sendNotification(userDetails, eventName);
+            result = notify.sendNotification(userDetails, eventName);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+	    return false;
         } catch (InstantiationException e) {
             e.printStackTrace();
+	    return false;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
+	    return false;
         }
+	return result;
     }
 
-/*    public void sendNotification(String notification, String userDetails, String message){
-		try{
-	    	String router = "6838abd39200172bfd1c0e6a9551da83e1186227";
-			notification = notification.toLowerCase();
-			String urlString = "http://10.2.0.1:8080/notify/1/" + router + "/" +  notification;
-			String data = URLEncoder.encode("to", "UTF-8") + "=" + URLEncoder.encode(userDetails, "UTF-8");
-			System.out.println(urlString);
-			data += "&" + URLEncoder.encode("body", "UTF-8") + "=" + URLEncoder.encode(message, "UTF-8");
-			URL url = new URL(urlString);
-			HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
-			urlConnection.setRequestMethod("POST");
-			urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			urlConnection.setRequestProperty("Content-Length", Integer.toString(data.getBytes().length));
-			urlConnection.setUseCaches(false);
-			urlConnection.setDoInput(true);
-			urlConnection.setDoOutput(true);
-			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(urlConnection.getOutputStream());
-			outputStreamWriter.write(data);
-			outputStreamWriter.flush();
-			outputStreamWriter.close();
-			System.out.println(urlConnection.getResponseCode());
-			System.out.println(urlConnection.getResponseMessage());
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-			String line;
-			while((line = bufferedReader.readLine()) != null){
-				//System.out.println(line);
-			}	   	 
-		} catch (Exception e){
-			e.printStackTrace();
-		}
-    }*/
-    
     private String getFullClassName(String name) {
 	String temp = name.toLowerCase();
 	name = temp.substring(0,1).toUpperCase() + temp.substring(1);
