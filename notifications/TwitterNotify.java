@@ -11,7 +11,7 @@ import com.google.gson.Gson;
  * Time: 14:05
  */
 public class TwitterNotify implements Notify {
-    public boolean sendNotification(String userDetails, String message) {
+    public boolean sendNotification(String notificationId, String userDetails, String message) {
         NotificationResponse nr = RemoteNotify.sendNotification("twitter", userDetails, message);
 	if(nr != null){
 	    if(nr.code == 200){
@@ -34,21 +34,21 @@ public class TwitterNotify implements Notify {
 			Gson gson = new Gson();
 			NotificationResponse response = gson.fromJson(jsonString, NotificationResponse.class);
 			if(response.code == 200){
-			    HWDBResponse.respond(nr.notificationId, true, "Direct Message Sent Successfully");
+			    HWDBResponse.respond(notificationId, true, "Direct Message Sent Successfully");
 			}else {
-			    HWDBResponse.respond(nr.notificationId, false, response.message);
+			    HWDBResponse.respond(notificationId, false, response.message);
 			    return false;
 			}	
 		    } else{
-			HWDBResponse.respond(nr.notificationId, false, urlConnection.getResponseMessage());
+			HWDBResponse.respond(notificationId, false, urlConnection.getResponseMessage());
 			return false;
 		    }
 		} catch (Exception e){
-		    HWDBResponse.respond(nr.notificationId, false, "An error occured when getting the notification status");
+		    HWDBResponse.respond(notificationId, false, "An error occured when getting the notification status");
 		    return false;
 		}
 	    }else{
-		HWDBResponse.respond(nr.notificationId, false, nr.message);
+		HWDBResponse.respond(notificationId, false, nr.message);
 		return false;
 	    }
 	}

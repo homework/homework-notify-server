@@ -5,5 +5,5 @@
  * Time: 16:24
  */
 public interface Notify {
-    public boolean sendNotification(String userDetails, String message);
+    public boolean sendNotification(String notificationId, String userDetails, String message);
 }

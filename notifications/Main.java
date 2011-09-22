@@ -70,7 +70,7 @@ public class Main implements Runnable{
 		while (rs.next()){
 		    String userDetails = rs.getString("UserDetails");
 		    String className = rs.getString("Service");
-		    if(sendNotification(className, userDetails, message)) break;
+		    if(sendNotification(notificationId, className, userDetails, message)) break;
 		}
 		dbCon.close();
 	    }	
@@ -95,7 +95,7 @@ public class Main implements Runnable{
 	}
     }
 
-    public boolean sendNotification(String notification, String userDetails, String eventName) {
+    public boolean sendNotification(String notificationId, String notification, String userDetails, String eventName) {
 	boolean result = false;
         try {
             notification = getFullClassName(notification);
@@ -104,7 +104,7 @@ public class Main implements Runnable{
             Notify notify;
             c = loader.loadClass(notification);
             notify = (Notify) c.newInstance();
-            result = notify.sendNotification(userDetails, eventName);
+            result = notify.sendNotification(notificationId, userDetails, eventName);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
 	    return false;

@@ -11,7 +11,7 @@ import com.google.gson.Gson;
  * Time: 11:59
  */
 public class PhoneNotify implements Notify {
-    public boolean sendNotification(String userDetails, String message) {
+    public boolean sendNotification(String notificationId, String userDetails, String message) {
         NotificationResponse nr = RemoteNotify.sendNotification("sms", userDetails, message);
 	if(nr != null){
 	    if(nr.code == 200){
@@ -34,22 +34,22 @@ public class PhoneNotify implements Notify {
 			Gson gson = new Gson();
 			NotificationResponse response = gson.fromJson(jsonString, NotificationResponse.class);
 			if(response.code == 200){
-			    HWDBResponse.respond(nr.notificationId, true, "Message Sent");
+			    HWDBResponse.respond(notificationId, true, "Message Sent");
 			    return true;
 			} else{
-			    HWDBResponse.respond(nr.notificationId, false, response.message);
+			    HWDBResponse.respond(notificationId, false, response.message);
 			    return false;
 			}
 		    } else {
-			HWDBResponse.respond(nr.notificationId, false, urlConnection.getResponseMessage());
+			HWDBResponse.respond(notificationId, false, urlConnection.getResponseMessage());
 			return false;
 		    }
 		} catch (Exception e){
-		    HWDBResponse.respond(nr.notificationId, false, "Error getting status");
+		    HWDBResponse.respond(notificationId, false, "Error getting status");
 		    return false;
 		}
 	    } else{
-		HWDBResponse.respond(nr.notificationId, false, nr.message);
+		HWDBResponse.respond(notificationId, false, nr.message);
 		return false;
 	    }
 	}

@@ -16,7 +16,7 @@ import java.io.IOException;
 public class GrowlNotify implements Notify{
     private static final int GROWL_UDP_PORT = 9887;
 
-    public boolean sendNotification(String userDetails, String message) {
+    public boolean sendNotification(String notificationId, String userDetails, String message) {
         OutputStreamWriter osw = null;
 	BufferedReader reader = null;
 	try{
@@ -28,7 +28,6 @@ public class GrowlNotify implements Notify{
 
             GrowlNotificationPacket growlNotificationPacket = new GrowlNotificationPacket("Homework", "networkevent", "Router Notification", message, 1, false);//create a notification
             packetPayload = growlNotificationPacket.payload();//create notification data to send
-	    String notificationId = "";
             if(sendPacket(packetPayload, inetAddr)){ //send notification.
 	    	HWDBResponse.respond(notificationId, true, "Growl notification sent");
 	    } else {
