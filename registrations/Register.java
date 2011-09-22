@@ -1,8 +1,19 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.*;
-
+import java.net.URL;
+import java.net.URLEncoder;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Properties;
 /**
  * Created by IntelliJ IDEA.
  * User: rob
@@ -78,6 +89,23 @@ public class Register {
 	    Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 	    ResultSet rs = stmt.executeQuery(String.format("insert into NotificationRegistrations(Endpoint, Service, Priority, UserDetails) values (\"%s\", \"%s\", %i, \"%s\")", endpoint, service, priority, userDetails));
 	    conn.close();
+	    Properties prop = new Properties();
+	    prop.load(new FileInputStream("/etc/homework/notification.conf"));
+	    String router = prop.getProperty("router_id");
+	    String urlString = "http://10.2.0.1:8080/notify/1/" + router + "/register";
+	    URL appURL = new URL(urlString);
+	    HttpURLConnection urlConnection = (HttpURLConnection)appURL.openConnection();
+	    urlConnection.setRequestMethod("POST");
+	    urlConnection.setRequestProperty("Content-Type", "application-x-www-form-urlencoded");
+	    urlConnection.setUseCaches(false);
+	    urlConnection.setDoInput(true);
+	    urlConnection.setDoOutput(true);
+	    String data = URLEncoder.encode("service", "UTF-8") + "=" + URLEncoder.encode(service, "UTF-8");
+	    data += "&" + URLEncoder.encode("userdetails", "UTF-8") + "=" + URLEncoder.encode(userDetails, "UTF-8");
+	    OutputStreamWriter osw = new OutputStreamWriter(urlConnection.getOutputStream());
+	    osw.write(data);
+	    osw.close();
+	    urlConnection.getInputStream();
 	    return;
 	} catch (Exception e){
 	    e.printStackTrace();
