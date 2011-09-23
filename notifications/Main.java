@@ -63,9 +63,9 @@ public class Main implements Runnable{
 		java.sql.Connection dbCon = DriverManager.getConnection(url, "root", "");
 		stmt = dbCon.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		if(service.equalsIgnoreCase("any")){
-		    rs = stmt.executeQuery(String.format("select * from NotificationRegistrations where Endpoint = \"%s\" order by Priority",destination));
+		    rs = stmt.executeQuery(String.format("select * from NotificationRegistrations where Endpoint like \"%s\" order by Priority",destination));
 		} else {
-		    rs = stmt.executeQuery(String.format("select * from NotificationRegistrations where Endpoint = \"%s\" and Service = \"%s\"", destination, service));
+		    rs = stmt.executeQuery(String.format("select * from NotificationRegistrations where Endpoint like \"%s\" and Service like \"%s\"", destination, service));
 		}		
 		while (rs.next()){
 		    String userDetails = rs.getString("UserDetails");

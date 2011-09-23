@@ -45,7 +45,7 @@ public class Register {
 	    serverOutput.println("Enter Priority: ");
 	    priorityString = serverInput.readLine();
 	    priority = Integer.parseInt(priorityString);
-            notification = notification.toLowerCase();
+	    notification = notification.toLowerCase();
             String temp = notification.substring(0, 1).toUpperCase();
             notification = temp + notification.substring(1);
             String className = getFullClassName(notification);
@@ -87,7 +87,7 @@ public class Register {
 	    String url = "jdbc:mysql://localhost:3306/hw";
 	    Connection conn = DriverManager.getConnection(url, "root", "");
 	    Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-	    ResultSet rs = stmt.executeQuery(String.format("insert into NotificationRegistrations(Endpoint, Service, Priority, UserDetails) values (\"%s\", \"%s\", %i, \"%s\")", endpoint, service, priority, userDetails));
+	    ResultSet rs = stmt.executeQuery(String.format("insert into NotificationRegistrations(Endpoint, Service, Priority, UserDetails) values (\"%s\", \"%s\", %i, \"%s\")", endpoint.toLowerCase(), service.toLowerCase(), priority, userDetails));
 	    conn.close();
 	    Properties prop = new Properties();
 	    prop.load(new FileInputStream("/etc/homework/notification.conf"));
