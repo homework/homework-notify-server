@@ -30,8 +30,9 @@ public class GrowlNotificationPacket {
     }
 
     public byte[] payload() {
+	ByteArrayOutputStream bout = null;
         try {
-            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            bout = new ByteArrayOutputStream();
 
             bout.write(GROWL_PROTOCOL_VERSION);
             bout.write(GROWL_TYPE_NOTIFICATION_NOAUTH);
@@ -82,7 +83,15 @@ public class GrowlNotificationPacket {
             return bout.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } finally{
+	    if(bout != null){
+		try{
+		    bout.close();
+		} catch (IOException e){
+		    e.printStackTrace();
+		}
+	    }
+	}
         return null;
     }
 }

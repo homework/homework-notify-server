@@ -30,10 +30,11 @@ public class GrowlRegistrationPacket {
     }
 
     public byte[] payload() {
+	ByteArrayOutputStream bout = null;
         try {
             //this is the content of the message that will be sent to register a new application in growl
             //it is needed in a byte array.
-            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            bout = new ByteArrayOutputStream();
             bout.write(GROWL_PROTOCOL_VERSION);
             bout.write(GROWL_TYPE_REGISTRATION_NOAUTH);
             //lengths of data
@@ -58,7 +59,15 @@ public class GrowlRegistrationPacket {
             return bout.toByteArray();
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        } finally {
+	    if(bout != null){
+		try{
+		    bout.close();
+		} catch (IOException e){
+		    e.printStackTrace();
+		}
+	    }
+	}
         return null;
     }
 }
