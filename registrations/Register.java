@@ -16,7 +16,7 @@ import java.sql.Statement;
 import java.util.Properties;
 /**
  * Created by IntelliJ IDEA.
- * User: rob
+ * User: rjs
  * Date: 19/08/2011
  * Time: 11:21
  */
