@@ -22,13 +22,18 @@ public class RemoteNotify{
             osw.close();
             System.out.println(urlConnection.getResponseCode());
             System.out.println(urlConnection.getResponseMessage());
+	    BufferedReader reader;
+	    if(urlConnection.getResponseCode() >= 400){
+		reader = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream()));
+	    } else{
+		reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+	    }
 	    String line;
-	    BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-	    line = reader.readLine();
-            System.out.println(line);
+	    while ((line = reader.readLine())!= null){
+		System.out.println(line);
+	    }
 	    return new NotificationResponse(urlConnection.getResponseCode(), urlConnection.getResponseMessage(), line);
         } catch (IOException e){
-            e.printStackTrace();
         }
 	return null;
     }
@@ -37,7 +42,7 @@ public class RemoteNotify{
 	    Properties prop = new Properties();
 	    prop.load(new FileInputStream("/etc/homework/notification.conf"));
 	    String router = prop.getProperty("router_id");
-            String urlString = "http://10.2.0.1:8080/notify/1/" + router + "/" + urlEnd;
+            String urlString = "https://homework-notify.appspot.com/notify/1/" + router + "/" + urlEnd;
 	    URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
             urlConnection.setRequestMethod("POST");

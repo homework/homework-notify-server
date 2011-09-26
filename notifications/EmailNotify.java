@@ -13,8 +13,8 @@ public class EmailNotify implements Notify{
 		HWDBResponse.respond(notificationId, true, "App engine sent message");
 		return true;
 	    }
-	}
 	HWDBResponse.respond(notificationId, false, nr.message);
+	}
 	return false;
     }
 }

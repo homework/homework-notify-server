@@ -92,7 +92,7 @@ public class Register {
 	    Properties prop = new Properties();
 	    prop.load(new FileInputStream("/etc/homework/notification.conf"));
 	    String router = prop.getProperty("router_id");
-	    String urlString = "http://10.2.0.1:8080/notify/1/" + router + "/register";
+	    String urlString = "https://homework-notify.appspot.com/notify/1/" + router + "/register";
 	    URL appURL = new URL(urlString);
 	    HttpURLConnection urlConnection = (HttpURLConnection)appURL.openConnection();
 	    urlConnection.setRequestMethod("POST");
