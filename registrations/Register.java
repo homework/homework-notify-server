@@ -9,10 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 /**
  * Created by IntelliJ IDEA.
@@ -83,11 +80,11 @@ public class Register {
 
     public static void register(String endpoint, String service,int priority, String userDetails) {
 	try{
-	    Class.forName("com.msql.jdbc.Driver");
+	    Class.forName("com.mysql.jdbc.Driver");
 	    String url = "jdbc:mysql://localhost:3306/hw";
 	    Connection conn = DriverManager.getConnection(url, "root", "");
-	    Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-	    ResultSet rs = stmt.executeQuery(String.format("insert into NotificationRegistrations(Endpoint, Service, Priority, UserDetails) values (\"%s\", \"%s\", %i, \"%s\")", endpoint.toLowerCase(), service.toLowerCase(), priority, userDetails));
+	    Statement stmt = conn.createStatement();
+	    stmt.executeUpdate(String.format("insert into NotificationRegistrations(Endpoint, Service, Priority, UserDetails) values (\"%s\", \"%s\", %d, \"%s\")", endpoint.toLowerCase(), service.toLowerCase(), priority, userDetails));
 	    conn.close();
 	    Properties prop = new Properties();
 	    prop.load(new FileInputStream("/etc/homework/notification.conf"));
@@ -102,13 +99,21 @@ public class Register {
 	    urlConnection.setDoOutput(true);
 	    String data = URLEncoder.encode("service", "UTF-8") + "=" + URLEncoder.encode(service, "UTF-8");
 	    data += "&" + URLEncoder.encode("userdetails", "UTF-8") + "=" + URLEncoder.encode(userDetails, "UTF-8");
+	    System.out.println(data);
 	    OutputStreamWriter osw = new OutputStreamWriter(urlConnection.getOutputStream());
 	    osw.write(data);
+	    osw.flush();
 	    osw.close();
+	    if(urlConnection.getResponseCode() >= 400){
+		BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream()));
+		String line;
+		while((line = reader.readLine()) != null){
+		    System.out.println(line);
+		}
+	    }
 	    urlConnection.getInputStream();
 	    return;
 	} catch (Exception e){
-	    e.printStackTrace();
 	}
     }
 }
