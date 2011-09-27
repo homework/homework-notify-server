@@ -82,10 +82,12 @@ public class Register {
 	try{
 	    Class.forName("com.mysql.jdbc.Driver");
 	    String url = "jdbc:mysql://localhost:3306/hw";
-	    Connection conn = DriverManager.getConnection(url, "root", "");
+	    Connection conn = DriverManager.getConnection(url, "homeuser", "homework");
 	    Statement stmt = conn.createStatement();
 	    stmt.executeUpdate(String.format("insert into NotificationRegistrations(Endpoint, Service, Priority, UserDetails) values (\"%s\", \"%s\", %d, \"%s\")", endpoint.toLowerCase(), service.toLowerCase(), priority, userDetails));
 	    conn.close();
+	    String data = URLEncoder.encode("service", "UTF-8") + "=" + URLEncoder.encode(service, "UTF-8");
+	    data += "&" + URLEncoder.encode("userdetails", "UTF-8") + "=" + URLEncoder.encode(userDetails, "UTF-8");
 	    Properties prop = new Properties();
 	    prop.load(new FileInputStream("/etc/homework/notification.conf"));
 	    String router = prop.getProperty("router_id");
@@ -94,11 +96,10 @@ public class Register {
 	    HttpURLConnection urlConnection = (HttpURLConnection)appURL.openConnection();
 	    urlConnection.setRequestMethod("POST");
 	    urlConnection.setRequestProperty("Content-Type", "application-x-www-form-urlencoded");
+	    urlConnection.setRequestProperty("Content-Length", Integer.toString(data.getBytes().length));
 	    urlConnection.setUseCaches(false);
 	    urlConnection.setDoInput(true);
 	    urlConnection.setDoOutput(true);
-	    String data = URLEncoder.encode("service", "UTF-8") + "=" + URLEncoder.encode(service, "UTF-8");
-	    data += "&" + URLEncoder.encode("userdetails", "UTF-8") + "=" + URLEncoder.encode(userDetails, "UTF-8");
 	    System.out.println(data);
 	    OutputStreamWriter osw = new OutputStreamWriter(urlConnection.getOutputStream());
 	    osw.write(data);

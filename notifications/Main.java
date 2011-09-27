@@ -60,7 +60,7 @@ public class Main implements Runnable{
 		String message = eventDataArray[4];
 		Class.forName("com.mysql.jdbc.Driver");
 		String url = "jdbc:mysql://localhost:3306/hw";
-		java.sql.Connection dbCon = DriverManager.getConnection(url, "root", "");
+		java.sql.Connection dbCon = DriverManager.getConnection(url, "homeuser", "homework");
 		stmt = dbCon.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		if(service.equalsIgnoreCase("any")){
 		    rs = stmt.executeQuery(String.format("select * from NotificationRegistrations where Endpoint like \"%s\" order by Priority",destination));
