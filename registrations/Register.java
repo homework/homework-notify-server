@@ -81,7 +81,7 @@ public class Register {
     public static void register(String endpoint, String service,int priority, String userDetails) {
 	try{
 	    Class.forName("com.mysql.jdbc.Driver");
-	    String url = "jdbc:mysql://localhost:3306/hw";
+	    String url = "jdbc:mysql://localhost:3306/Homework";
 	    Connection conn = DriverManager.getConnection(url, "homeuser", "homework");
 	    Statement stmt = conn.createStatement();
 	    stmt.executeUpdate(String.format("insert into NotificationRegistrations(Endpoint, Service, Priority, UserDetails) values (\"%s\", \"%s\", %d, \"%s\")", endpoint.toLowerCase(), service.toLowerCase(), priority, userDetails));
@@ -109,6 +109,12 @@ public class Register {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream()));
 		String line;
 		while((line = reader.readLine()) != null){
+		    System.out.println(line);
+		}
+	    } else{
+		BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+		String line;
+		while((line = reader.readLine())!=null){
 		    System.out.println(line);
 		}
 	    }

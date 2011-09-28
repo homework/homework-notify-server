@@ -59,7 +59,7 @@ public class Main implements Runnable{
 		String service = eventDataArray[3];
 		String message = eventDataArray[4];
 		Class.forName("com.mysql.jdbc.Driver");
-		String url = "jdbc:mysql://localhost:3306/hw";
+		String url = "jdbc:mysql://localhost:3306/Homework";
 		java.sql.Connection dbCon = DriverManager.getConnection(url, "homeuser", "homework");
 		stmt = dbCon.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		if(service.equalsIgnoreCase("any")){
