@@ -1,3 +1,5 @@
 *.class
 .DS_Store
 ._.DS_Store
+appengine.conf
+notification.conf
