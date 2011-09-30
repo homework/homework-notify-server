@@ -29,7 +29,6 @@ public class Register {
             clientSocket = serverSocket.accept();
             serverOutput = new PrintWriter(clientSocket.getOutputStream(), true);
             serverInput = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            serverOutput.println("To register, you need to answer some questions.");
             String notification;
 	    String name;
 	    String priorityString;
@@ -44,8 +43,8 @@ public class Register {
 	    priority = Integer.parseInt(priorityString);
 	    notification = notification.toLowerCase();
             String temp = notification.substring(0, 1).toUpperCase();
-            notification = temp + notification.substring(1);
-            String className = getFullClassName(notification);
+            String className = temp + notification.substring(1);
+            className = getFullClassName(className);
             ClassLoader loader = Register.class.getClassLoader();
             Class c;
             RegistrationInterface registrationInterface;
@@ -91,16 +90,15 @@ public class Register {
 	    Properties prop = new Properties();
 	    prop.load(new FileInputStream("/etc/homework/notification.conf"));
 	    String router = prop.getProperty("router_id");
-	    String urlString = "https://homework-notify.appspot.com/notify/1/" + router + "/register";
+	    String urlString = "http://10.2.0.1:8080/notify/1/" + router + "/register";
 	    URL appURL = new URL(urlString);
 	    HttpURLConnection urlConnection = (HttpURLConnection)appURL.openConnection();
 	    urlConnection.setRequestMethod("POST");
-	    urlConnection.setRequestProperty("Content-Type", "application-x-www-form-urlencoded");
-	    urlConnection.setRequestProperty("Content-Length", Integer.toString(data.getBytes().length));
+	    urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+	    urlConnection.setRequestProperty("Content-Length", Integer.toString(data.getBytes("UTF-8").length));
 	    urlConnection.setUseCaches(false);
 	    urlConnection.setDoInput(true);
 	    urlConnection.setDoOutput(true);
-	    System.out.println(data);
 	    OutputStreamWriter osw = new OutputStreamWriter(urlConnection.getOutputStream());
 	    osw.write(data);
 	    osw.flush();
