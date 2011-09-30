@@ -31,8 +31,8 @@ public class RemoteNotify{
 	    String line;
 	    while ((line = reader.readLine())!= null){
 		System.out.println(line);
+	    	return new NotificationResponse(urlConnection.getResponseCode(), urlConnection.getResponseMessage(), line);
 	    }
-	    return new NotificationResponse(urlConnection.getResponseCode(), urlConnection.getResponseMessage(), line);
         } catch (IOException e){
         }
 	return null;

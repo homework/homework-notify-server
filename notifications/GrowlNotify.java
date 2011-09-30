@@ -18,7 +18,6 @@ public class GrowlNotify implements Notify{
 
     public boolean sendNotification(String notificationId, String userDetails, String message) {
         OutputStreamWriter osw = null;
-	BufferedReader reader = null;
 	try{
             String inetAddr = userDetails; //address to send to
             GrowlRegistrationPacket packet = new GrowlRegistrationPacket("Homework"); //register application
@@ -50,7 +49,6 @@ public class GrowlNotify implements Notify{
         } finally{
 	    try{
 	        osw.close();
-	        reader.close();
 	    }catch(IOException ex){
 		ex.printStackTrace();
 		return false;

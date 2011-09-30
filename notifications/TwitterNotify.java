@@ -44,7 +44,8 @@ public class TwitterNotify implements Notify {
 			return false;
 		    }
 		} catch (Exception e){
-		    HWDBResponse.respond(notificationId, false, "An error occured when getting the notification status");
+		    e.printStackTrace ();
+		    HWDBResponse.respond(notificationId, false, "An error occured when getting the notification status" + e.getMessage());
 		    return false;
 		}
 	    }else{

@@ -11,7 +11,7 @@ public class HWDBResponse{
 	    Service service = srpc.offer(serviceName);
 	    conn = srpc.connect("localhost", 987, "HWDB");
 	    int port = srpc.details().getPort();
-	    conn.call(String.format("SQL:insert into NotificationResponse (NotificationId, Status, Message) values(\"%s\", %b, \"%s\")\n %d %s", notificationId, status, message, port, serviceName));
+	    conn.call(String.format("SQL:insert into NotificationResponse values(\"%s\", '%b', \"%s\")\n %d %s", notificationId, status, message, port, serviceName));
 	} catch (IOException e){
 	    e.printStackTrace();
 	    System.exit(1);
