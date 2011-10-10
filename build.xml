@@ -9,7 +9,7 @@
 
 	<target name="compile">
 		<mkdir dir="build" />
-		<javac destdir="build">
+		<javac destdir="build" includeAntRuntime="no">
 			<src path="registrations" />
 			<src path="notifications" />
 			<classpath refid="classpath" />
