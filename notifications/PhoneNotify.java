@@ -12,7 +12,7 @@ import com.google.gson.Gson;
  */
 public class PhoneNotify implements Notify {
     public boolean sendNotification(String notificationId, String userDetails, String message) {
-        NotificationResponse nr = RemoteNotify.sendNotification("sms", userDetails, message);
+        NotificationResponse nr = RemoteNotify.sendNotification("phone", userDetails, message);
 	if(nr != null){
 	    if(nr.code == 200){
 		try{
