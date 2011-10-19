@@ -12,7 +12,7 @@ request = urllib2.Request(targetAuthURL)
 response = urllib2.urlopen(request)
 responseBody = response.read()
 if response.getcode() == 200:
-    directory = os.path.dirname("/etc/homework")
+    directory = os.path.dirname("/etc/homework/")
     if not os.path.exists(directory):
         os.makedirs(directory)
     f = open('/etc/homework/notification.conf', 'w')
