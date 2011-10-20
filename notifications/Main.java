@@ -66,12 +66,17 @@ public class Main implements Runnable{
 		    rs = stmt.executeQuery(String.format("select * from NotificationRegistrations where Endpoint like \"%s\" order by Priority",destination));
 		} else {
 		    rs = stmt.executeQuery(String.format("select * from NotificationRegistrations where Endpoint like \"%s\" and Service like \"%s\"", destination, service));
-		}		
-		while (rs.next()){
-		    String userDetails = rs.getString("UserDetails");
-		    String className = rs.getString("Service");
-		    if(sendNotification(notificationId, className, userDetails, message)) break;
 		}
+		if(rs.first()){
+		    while (rs.next()){
+		        String userDetails = rs.getString("UserDetails");
+		        String className = rs.getString("Service");
+		        if(sendNotification(notificationId, className, userDetails, message)) break;
+		    }	
+		}else{
+		    HWDBResponse.respond(notificationId, false, "No Registrations for this endpoint");
+		}
+		
 		dbCon.close();
 	    }	
 	} catch(Exception e){
