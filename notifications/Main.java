@@ -68,6 +68,7 @@ public class Main implements Runnable{
 		    rs = stmt.executeQuery(String.format("select * from NotificationRegistrations where Endpoint like \"%s\" and Service like \"%s\"", destination, service));
 		}
 		if(rs.first()){
+                    rs.beforeFirst();
 		    while (rs.next()){
 		        String userDetails = rs.getString("UserDetails");
 		        String className = rs.getString("Service");
