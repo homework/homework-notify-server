@@ -34,22 +34,17 @@ public class PushNotify implements Notify{
 			Gson gson = new Gson();
 			NotificationResponse response = gson.fromJson(jsonString, NotificationResponse.class);
 			if(response.code == 200){
-			    HWDBResponse.respond(notificationId, true, "Message Sent");
-			    return true;
+                return true;
 			} else {
-			    HWDBResponse.respond(notificationId, false, response.message);
 			    return false;
 			}
 		    } else{
-			HWDBResponse.respond(notificationId, false, urlConnection.getResponseMessage());
 			return false;
 		    }
 		} catch(Exception e){
-		    HWDBResponse.respond(notificationId, false, "Error getting notification status");
-		    return false;
+            return false;
 		}   
 	    } else {
-		HWDBResponse.respond(notificationId, false, nr.message);
 		return false;
 	    }
 	}

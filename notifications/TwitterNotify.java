@@ -34,22 +34,18 @@ public class TwitterNotify implements Notify {
 			Gson gson = new Gson();
 			NotificationResponse response = gson.fromJson(jsonString, NotificationResponse.class);
 			if(response.code == 200){
-			    HWDBResponse.respond(notificationId, true, "Direct Message Sent Successfully");
+			    return true;
 			}else {
-			    HWDBResponse.respond(notificationId, false, response.message);
 			    return false;
 			}	
 		    } else{
-			HWDBResponse.respond(notificationId, false, urlConnection.getResponseMessage());
 			return false;
 		    }
 		} catch (Exception e){
 		    e.printStackTrace ();
-		    HWDBResponse.respond(notificationId, false, "An error occured when getting the notification status" + e.getMessage());
 		    return false;
 		}
 	    }else{
-		HWDBResponse.respond(notificationId, false, nr.message);
 		return false;
 	    }
 	}

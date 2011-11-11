@@ -11,10 +11,9 @@ public class FacebookNotify implements Notify{
         NotificationResponse nr = RemoteNotify.sendNotification("facebook", userDetails, body);
 	if(nr != null){
 	    if(nr.code == 200){
-		HWDBResponse.respond(notificationId, true, "App Engine Sent Notification");
+            return true;
 	    }
-	}
-	HWDBResponse.respond(notificationId, false, nr.message);
+	}   
         return false;
 
     }

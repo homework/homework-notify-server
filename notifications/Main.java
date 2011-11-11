@@ -1,6 +1,6 @@
 import org.hwdb.srpc.*;
 import org.hwdb.srpc.Service;
-
+import java.io.IOException;
 import java.sql.*;
 /**
  * Created by IntelliJ IDEA.
@@ -68,14 +68,21 @@ public class Main implements Runnable{
 		    rs = stmt.executeQuery(String.format("select * from NotificationRegistrations where Endpoint like \"%s\" and Service like \"%s\"", destination, service));
 		}
 		if(rs.first()){
-                    rs.beforeFirst();
+            rs.beforeFirst();
+            boolean success = false;
 		    while (rs.next()){
 		        String userDetails = rs.getString("UserDetails");
 		        String className = rs.getString("Service");
-		        if(sendNotification(notificationId, className, userDetails, message)) break;
-		    }	
+		        if(sendNotification(notificationId, className, userDetails, message)){
+                    success = true;
+                    break;
+                }
+		    }
+            if(!success){
+                sendNotificationResponse(notificationId, false, "Failed to send notification");
+            }
 		}else{
-		    HWDBResponse.respond(notificationId, false, "No Registrations for this endpoint");
+		    sendNotificationResponse(notificationId, false, "No registered endpoints for the requested service");
 		}
 		
 		dbCon.close();
@@ -130,6 +137,10 @@ public class Main implements Runnable{
         return name + "Notify";
     }
 
+    public void sendNotificationResponse(String notificationId, boolean status, String message) throws IOException {
+        conn.call(String.format("SQL:insert into NotificationResponse values(\"%s\", '%b', \"%s\")\n", notificationId, status, message));
+    }
+    
     public static void main(String[] args) {
         new Main();
     }

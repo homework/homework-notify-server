@@ -18,6 +18,7 @@ public class GrowlNotify implements Notify{
 
     public boolean sendNotification(String notificationId, String userDetails, String message) {
         OutputStreamWriter osw = null;
+        boolean success = false;
 	try{
             String inetAddr = userDetails; //address to send to
             GrowlRegistrationPacket packet = new GrowlRegistrationPacket("Homework"); //register application
@@ -28,9 +29,8 @@ public class GrowlNotify implements Notify{
             GrowlNotificationPacket growlNotificationPacket = new GrowlNotificationPacket("Homework", "networkevent", "Router Notification", message, 1, false);//create a notification
             packetPayload = growlNotificationPacket.payload();//create notification data to send
             if(sendPacket(packetPayload, inetAddr)){ //send notification.
-	    	HWDBResponse.respond(notificationId, true, "Growl notification sent");
+                success = true;
 	    } else {
-		HWDBResponse.respond(notificationId, false, "Growl notification was not sent");
 		return false;
 	    }
 	    //Connect to Google App Engine to Log the notification that was sent
@@ -54,7 +54,8 @@ public class GrowlNotify implements Notify{
 		return false;
 	    }
 	}
-        return true;
+        if(success)return true;
+        return false;
     }
 
     private boolean sendPacket(byte[] packet,String inetAddr){

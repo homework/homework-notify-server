@@ -10,10 +10,8 @@ public class EmailNotify implements Notify{
         NotificationResponse nr = RemoteNotify.sendNotification("email", userDetails, body);
 	if(nr != null){
 	    if(nr.code == 200){
-		HWDBResponse.respond(notificationId, true, "App engine sent message");
 		return true;
 	    }
-	HWDBResponse.respond(notificationId, false, nr.message);
 	}
 	return false;
     }
