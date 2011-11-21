@@ -74,8 +74,9 @@ public class Main implements Runnable{
 		        String userDetails = rs.getString("UserDetails");
 		        String className = rs.getString("Service");
 		        if(sendNotification(notificationId, className, userDetails, message)){
-                    success = true;
-                    break;
+                    	    sendNotificationResponse(notificationId, true, "Notification Sent");
+                    	    success = true;
+                            break;
                 }
 		    }
             if(!success){
