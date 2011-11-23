@@ -79,12 +79,6 @@ public class Register {
 
     public static void register(String endpoint, String service,int priority, String userDetails) {
 	try{
-	    Class.forName("com.mysql.jdbc.Driver");
-	    String url = "jdbc:mysql://localhost:3306/Homework";
-	    Connection conn = DriverManager.getConnection(url, "homeuser", "homework");
-	    Statement stmt = conn.createStatement();
-	    stmt.executeUpdate(String.format("insert into NotificationRegistrations(Endpoint, Service, Priority, UserDetails) values (\"%s\", \"%s\", %d, \"%s\")", endpoint.toLowerCase(), service.toLowerCase(), priority, userDetails));
-	    conn.close();
 	    String data = URLEncoder.encode("service", "UTF-8") + "=" + URLEncoder.encode(service, "UTF-8");
 	    data += "&" + URLEncoder.encode("userdetails", "UTF-8") + "=" + URLEncoder.encode(userDetails, "UTF-8");
 	    Properties prop = new Properties();
@@ -109,6 +103,13 @@ public class Register {
 		while((line = reader.readLine()) != null){
 		    System.out.println(line);
 		}
+	    } else if(urlConnection.getResponseCode() == 200){
+	        Class.forName("com.mysql.jdbc.Driver");
+	        String url = "jdbc:mysql://localhost:3306/Homework";
+	        Connection conn = DriverManager.getConnection(url, "homeuser", "homework");
+	        Statement stmt = conn.createStatement();
+	        stmt.executeUpdate(String.format("insert into NotificationRegistrations(Endpoint, Service, Priority, UserDetails) values (\"%s\", \"%s\", %d, \"%s\")", endpoint.toLowerCase(), service.toLowerCase(), priority, userDetails));
+	        conn.close();	
 	    } else{
 		BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 		String line;
